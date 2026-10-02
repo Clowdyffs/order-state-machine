@@ -44,8 +44,13 @@ class Order:
             try:
                 self.complete_order(self.order_id)
             except CompletionFailed:
-                self.payment.void(self.order_id)
-                self._set_state("cancelled")
+                try:
+                    self.payment.void(self.order_id)
+                except VoidFailed:
+                    self._set_state("needs_attention")
+                    raise
+                else:
+                    self._set_state("cancelled")
             else:
                 self._set_state("complete")
         else:

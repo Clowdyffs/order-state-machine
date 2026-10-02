@@ -45,3 +45,6 @@ now the test_completion_failure_with_successful_void test passes too.
 
 ----
 
+last case, now we just need to an a check onto the previous case to check if we got a success code or the VoidFailed exception. then escalate it if we do get the exception. 
+
+all tests pass now, advancing from an invalid state would raise a ValueError exception. 
