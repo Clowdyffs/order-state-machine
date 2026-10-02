@@ -34,8 +34,12 @@ class Order:
 
     def advance(self) -> None:
         if self.state == "initialized":
-            self.payment.authorize(self.order_id)
-            self._set_state("payment_authorized")
+            try:
+                self.payment.authorize(self.order_id)
+            except PaymentDeclined:
+                self._set_state("rejected")
+            else:
+                self._set_state("payment_authorized")
         elif self.state == "payment_authorized":
             self.complete_order(self.order_id)
             self._set_state("complete")

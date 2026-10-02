@@ -30,3 +30,9 @@ all tests fail, demonstrated by `python -m pytest -q`
 now to implement the easy case where everything goes well. not doing any checks yet since we are assuming just the init -> authorize -> complete. 
 
 passes the test_happy_path test now
+
+----
+
+now for the next case, a rejected payment. just have to add a check to see if we get a success code or the PaymentDeclined exception, we can set the status to rejected if we get that exception. 
+
+happy path + payment rejection tests now pass
