@@ -31,3 +31,13 @@ class Order:
     def _set_state(self, state: str) -> None:
         self.state = state
         self.history.append((state, datetime.now(timezone.utc)))
+
+    def advance(self) -> None:
+        if self.state == "initialized":
+            self.payment.authorize(self.order_id)
+            self._set_state("payment_authorized")
+        elif self.state == "payment_authorized":
+            self.complete_order(self.order_id)
+            self._set_state("complete")
+        else:
+            raise ValueError(f"Cannot advance order in state {self.state!r}")

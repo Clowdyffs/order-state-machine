@@ -23,3 +23,10 @@ also need a simple datastructure for orders, pretty much just going to be except
 alright, tests implemented with the rough shape of things. time for the payment system and data structure since we need those to start implementing the state machine. 
 
 also added a function to the order data structure to handle updating the state (appending to the tuple array with the new state and the timestamp). 
+
+----
+all tests fail, demonstrated by `python -m pytest -q`
+
+now to implement the easy case where everything goes well. not doing any checks yet since we are assuming just the init -> authorize -> complete. 
+
+passes the test_happy_path test now
