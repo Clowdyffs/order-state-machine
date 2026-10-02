@@ -41,7 +41,12 @@ class Order:
             else:
                 self._set_state("payment_authorized")
         elif self.state == "payment_authorized":
-            self.complete_order(self.order_id)
-            self._set_state("complete")
+            try:
+                self.complete_order(self.order_id)
+            except CompletionFailed:
+                self.payment.void(self.order_id)
+                self._set_state("cancelled")
+            else:
+                self._set_state("complete")
         else:
             raise ValueError(f"Cannot advance order in state {self.state!r}")

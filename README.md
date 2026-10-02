@@ -36,3 +36,12 @@ passes the test_happy_path test now
 now for the next case, a rejected payment. just have to add a check to see if we get a success code or the PaymentDeclined exception, we can set the status to rejected if we get that exception. 
 
 happy path + payment rejection tests now pass
+
+----
+
+next is the CompletionFailed exception after we see the payment was authorized. we have to call void with the order id, for this test we don't have to check if the void fails yet, just assume it voids and cancel the order.
+
+now the test_completion_failure_with_successful_void test passes too.
+
+----
+
