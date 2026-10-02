@@ -18,3 +18,8 @@ The rough idea of the stub payment system before i write the tests is have a sim
 
 also need a simple datastructure for orders, pretty much just going to be exceptions, the order id, current state, and a tuple array to track state changes. when an order is created it, the tuple should be something like [("initialized", timestamp)]
 
+----
+
+alright, tests implemented with the rough shape of things. time for the payment system and data structure since we need those to start implementing the state machine. 
+
+also added a function to the order data structure to handle updating the state (appending to the tuple array with the new state and the timestamp). 
