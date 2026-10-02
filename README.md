@@ -16,5 +16,5 @@ as for how the state machine will work, it will essentially be checking if payme
 
 The rough idea of the stub payment system before i write the tests is have a simple authorize(order_id) and void(order_id) method, should be able to just raise an exception if the authorization or void fails. can mock failures in the test by raising the exceptions for either case. and simply return a success code like 200 if it was a success. 
 
-also need a simple datastructure for orders, pretty much just going to be the exception's, the order id, current state, and a tuple array to track state changes. when an order is created it, the tuple should be something like [("initialized", timestamp)]
+also need a simple datastructure for orders, pretty much just going to be exceptions, the order id, current state, and a tuple array to track state changes. when an order is created it, the tuple should be something like [("initialized", timestamp)]
 
