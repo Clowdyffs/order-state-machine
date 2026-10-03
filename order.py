@@ -17,6 +17,10 @@ class VoidFailed(Exception):
     """The authorized payment could not be voided."""
 
 
+class InvalidTransition(ValueError):
+    """The order cannot advance from its current state."""
+
+
 @dataclass
 class Order:
     order_id: str
@@ -54,4 +58,4 @@ class Order:
             else:
                 self._set_state("complete")
         else:
-            raise ValueError(f"Cannot advance order in state {self.state!r}")
+            raise InvalidTransition(f"Cannot advance order in state {self.state!r}")

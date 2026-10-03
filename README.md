@@ -1,3 +1,54 @@
+What I built:
+I built an order state machine in python, testing with pytest, api implemented via fastapi.
+
+I used python because personally I think it's the most readable, and easiest to iterate on. I used fastAPI simply because I am the most familiar with it, even though it does have tradeoffs that i'll explain.
+
+how to run it: 
+
+Use Python 3.10 or newer. From the repo directory:
+
+```sh
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+Start the API:
+
+```sh
+python -m uvicorn api:app --reload
+```
+
+Open http://127.0.0.1:8000/docs to try the endpoints:
+
+- `POST /orders` creates an order and returns its ID.
+- `POST /orders/{order_id}/advance` advances it one step. Call twice for the happy path.
+- `GET /orders/{order_id}` returns the current state and timestamped history.
+
+Run the tests:
+
+```sh
+python -m pytest -q
+```
+
+Run with one worker. Orders are stored in memory, so restarting or reloading the server clears them. The running API uses successful payment and completion stubs; tests mock the failure cases.
+
+tradeoffs:
+
+First off, the language is a tradeoff if this were to be a production system. If i had to choose a language for a production system, I would most likely choose rust, with go as the runner up. Second, the way fastAPI was implemented uses a global lock, which isn't scalable at all since it serializes everything. A more ideal api setup would have better parallelization, since I just have one global lock for simplicity, which serializes all operations across all orders (bad scaling).
+
+I'm going to treat this question as more of a "if you had to build a more production ready system", since time wasn't a big issue for me. I would start on the api side, and implementing a more scalable version that coordinates better. I'd also obviously use a different language since python was picked mostly for illustration. I would also test how it handles large bursts of orders, since the inherent behavior is "last-minute" so there could potentially be lots of orders in a short period of time, with also the amount of tickets running out during the burst. 
+
+ai usage:
+
+For my ai tools, I used GPT 6.1 sol (high) on the codex harness via t3-code. I picked this since I didn't really need a super powerful model or a higher thinking effort, so it's cheap while also being reliable for the task I was doing. t3-code is just my interface of choice. 
+
+Ai was used to proofread code, and also implement my pre-defined architecture decisions (more for speed rather than implementation quality, I proofread and corrected mistakes or unnecessary code), and implement the payment.py stub payment system. didn't really need a more complex setup for this task, I can explain every line of code with ease. docs were fully handwritten except for the above section on how to run it. 
+
+----
+
+This following section is my recorded thoughts throughout the entire implementation process. 
+
 For reference, this README will be written in a linear order to easily track my thoughts through the building process. Things will be recorded in roughly the order I think/do them. 
 
 Pre-code brainstorm: 
@@ -48,3 +99,8 @@ now the test_completion_failure_with_successful_void test passes too.
 last case, now we just need to an a check onto the previous case to check if we got a success code or the VoidFailed exception. then escalate it if we do get the exception. 
 
 all tests pass now, advancing from an invalid state would raise a ValueError exception. 
+
+----
+now to implement the api, gonna still use fastapi
+
+implemented via fastapi, gpt 6.1 sol also added some boilerplate tests for it (more info on ai stuffs toward at the top)
